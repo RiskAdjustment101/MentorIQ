@@ -82,9 +82,12 @@ const StaticContentPanel: React.FC = () => {
         
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button className="px-8 py-3 bg-orange-500 hover:bg-orange-600 rounded-lg font-medium transition-colors duration-200">
-            Start Mentoring Programs
-          </button>
+          <a 
+            href="/register" 
+            className="px-8 py-3 bg-orange-500 hover:bg-orange-600 rounded-lg font-medium transition-colors duration-200 text-center text-white no-underline"
+          >
+            Get Started - Register Now
+          </a>
           <button className="px-8 py-3 border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white rounded-lg font-medium transition-colors duration-200">
             Browse All Programs
           </button>
