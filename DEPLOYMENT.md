@@ -194,3 +194,25 @@ netlify/functions/
 ---
 
 **Your MentorIQ AI landing page is now ready for professional deployment with version control, automatic updates, and enterprise-grade hosting!** 🚀
+
+## 🌐 **Application Routes (v1.1.0)**
+
+### **Available Pages**
+Your deployed MentorIQ application now includes:
+
+- **Landing Page**: `/` 
+  - AI-enhanced program discovery interface
+  - 70/30 split-screen with conversational AI
+  - Program recommendations and mentor matching
+
+- **Registration Page**: `/register`
+  - Revolutionary bidirectional registration system
+  - Complete signup via traditional form OR conversational AI
+  - Real-time synchronization between interfaces
+  - Smart field extraction from natural language
+
+### **Routing Configuration**
+- **Client-side**: React Router handles navigation
+- **Server fallback**: All routes redirect to `/index.html`
+- **SEO ready**: Each route has proper meta tags
+- **Analytics**: Page views tracked for both routes
