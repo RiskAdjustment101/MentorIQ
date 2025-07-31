@@ -28,7 +28,7 @@ class MentorIQGroqService:
         else:
             self.client = Groq(api_key=api_key)
         
-        self.model = "llama3-8b-8192"  # Groq's fastest model
+        self.model = "llama-3.3-70b-versatile"  # Groq's most capable model (Llama 3.3 70B)
         self.knowledge_base = self._load_platform_knowledge()
         
     def _load_platform_knowledge(self) -> Dict:
@@ -45,7 +45,7 @@ class MentorIQGroqService:
             "tech_stack": {
                 "frontend": "React 18 + TypeScript + TailwindCSS + Vite",
                 "backend": "Python 3.11 + FastAPI + Groq AI integration",
-                "ai_service": "Groq with Llama3-8B model (ultra-fast inference)",
+                "ai_service": "Groq with Llama 3.3 70B model (most capable, ultra-fast)",
                 "state_management": "Zustand for React components",
                 "design_system": "Anthropic UI (dark theme #0F172A, orange accents #FF6B35)",
                 "hosting": "Netlify frontend, Railway/Render backend"
