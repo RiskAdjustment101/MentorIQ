@@ -230,38 +230,41 @@ const useAppState = () => ({
 });
 ```
 
-### **Backend: Node.js Microservices Standards**
+### **Backend: Python + FastAPI Standards**
 
 #### **Service Architecture**
 ```
-Facebook Microservices Pattern:
+Python Microservices Pattern:
 ├── src/
-│   ├── controllers/     // Request handlers
+│   ├── api/             // FastAPI route handlers
 │   ├── services/        // Business logic
-│   ├── models/          // Data models
-│   ├── middleware/      // Express middleware
-│   ├── utils/           // Utility functions
-│   ├── types/           // TypeScript interfaces
-│   └── __tests__/       // Service tests
+│   ├── models/          // SQLAlchemy models
+│   ├── schemas/         // Pydantic schemas
+│   ├── core/            // Core utilities (security, config)
+│   ├── utils/           // Helper functions
+│   └── tests/           // pytest test files
+├── alembic/             // Database migrations
 ├── docs/                // API documentation
 ├── scripts/             // Deployment scripts
-└── Dockerfile          // Container configuration
+└── Dockerfile           // Container configuration
 ```
 
 #### **API Design Standards**
-- **GraphQL-First:** Single endpoint with flexible queries
-- **RESTful Fallbacks:** Traditional endpoints where GraphQL doesn't fit
-- **API Versioning:** Backward compatibility with deprecation strategy
-- **Rate Limiting:** Protect against abuse and ensure fair usage
-- **Comprehensive Logging:** Structured logs for debugging and analytics
+- **RESTful Design:** Clear resource-based endpoints
+- **FastAPI Features:** Automatic OpenAPI documentation
+- **Pydantic Models:** Request/response validation
+- **Async Support:** Leverage FastAPI's async capabilities
+- **Error Handling:** Consistent error response format
+- **Rate Limiting:** Protect endpoints from abuse
+- **Comprehensive Logging:** Structured logs with context
 
 #### **Database Standards**
-```sql
--- Facebook's Database Patterns
--- Optimized for read-heavy workloads
--- Denormalization for performance
--- Indexing strategy for query patterns
--- Connection pooling and caching layers
+```python
+# SQLAlchemy Best Practices
+# Async database sessions
+# Connection pooling configuration
+# Query optimization patterns
+# Migration strategy with Alembic
 ```
 
 ---
@@ -537,7 +540,7 @@ Package Installation Rules:
 ```
 Fixed Architecture Elements:
 ├── React + TypeScript frontend
-├── Node.js + Express backend
+├── Python + FastAPI backend
 ├── PostgreSQL database
 ├── Split-screen UI layout
 └── RESTful API design (no GraphQL unless requested)
@@ -702,16 +705,14 @@ This framework ensures stable, incremental development with clear boundaries and
 ### **Documentation Requirements**
 
 #### **API Documentation**
-```typescript
-/**
- * Facebook JSDoc Standards
- * @description Clear, comprehensive function documentation
- * @param {string} mentorId - Unique identifier for mentor
- * @returns {Promise<MentorProfile>} Mentor profile data
- * @throws {ValidationError} When mentorId is invalid
- * @example
- * const profile = await getMentorProfile('mentor_123');
- */
+```python
+"""
+FastAPI Documentation Standards
+Comprehensive docstrings for all endpoints
+Type hints for all parameters and returns
+Example requests and responses
+Error handling documentation
+"""
 ```
 
 #### **README Standards**
@@ -980,6 +981,253 @@ AI Pipeline Services:
 - Production-ready AI integration
 - Proven mentor engagement and value
 - Technical foundation for rapid feature expansion
+
+---
+
+## **Embedded LLM Integration with Ollama**
+
+### **Overview**
+Integrate Ollama as the embedded LLM solution to provide intelligent, platform-aware responses across all user touchpoints (landing page, registration, mentor dashboard) using a single, unified AI service.
+
+### **Why Ollama**
+- **Open Source:** Completely free and self-hosted
+- **Easy Integration:** Simple API that works with existing FastAPI backend
+- **Model Flexibility:** Run Llama 2, Mistral, or other open models
+- **Local Processing:** Complete data privacy, no external API calls
+- **Resource Efficient:** Optimized for standard hardware
+
+---
+
+## **Ollama Architecture Integration**
+
+### **Updated Platform Architecture**
+```
+Platform Components:
+├── Frontend (React) - Unchanged
+├── Backend (FastAPI) - Unchanged
+├── Database (PostgreSQL) - Unchanged
+├── Redis (Caching) - Unchanged
+└── Ollama Service (NEW)
+    ├── Llama 2 7B Model (or similar)
+    ├── Platform Knowledge Base
+    ├── Context Manager
+    └── Response Generator
+```
+
+### **Service Integration Pattern**
+```python
+# Add to existing FastAPI backend structure
+src/
+├── existing_folders/
+└── ai/                          # NEW: AI components
+    ├── ollama_service.py        # Ollama integration
+    ├── knowledge_base.py        # Platform-specific knowledge
+    ├── context_manager.py       # Manages conversation context
+    └── platform_learning.py     # Learns from interactions
+```
+
+---
+
+## **Implementation Phases (Addition to Existing Roadmap)**
+
+### **Phase 2.5: Ollama Integration (Weeks 6-7)**
+Integrate Ollama to replace pattern-matched responses with intelligent AI
+
+#### **Technical Tasks**
+```
+Ollama Setup:
+├── Install Ollama on backend server
+├── Download and configure Llama 2 7B model
+├── Create platform knowledge indexing system
+├── Build context management for conversations
+└── Implement response generation pipeline
+```
+
+#### **Integration Points**
+```
+API Endpoints (Addition to existing):
+├── /api/ai/chat/landing         # Landing page assistant
+├── /api/ai/chat/registration    # Registration assistant
+├── /api/ai/chat/dashboard       # Mentor dashboard assistant
+└── /api/ai/knowledge/update     # Update platform knowledge
+```
+
+#### **Success Criteria**
+- [ ] Ollama responds to natural language queries
+- [ ] Single LLM serves all platform touchpoints
+- [ ] Response time under 2 seconds
+- [ ] Platform-specific knowledge reflected in answers
+- [ ] Conversation context maintained across pages
+
+---
+
+## **Ollama-Specific Configuration**
+
+### **Model Configuration**
+```yaml
+# ollama_config.yaml
+model:
+  name: llama2:7b
+  temperature: 0.7
+  context_window: 4096
+  
+system_prompt: |
+  You are an AI assistant for an FLL mentor management platform.
+  You help parents find robotics programs and mentors manage teams.
+  Use platform-specific knowledge to provide accurate, helpful responses.
+  
+knowledge_base:
+  update_frequency: daily
+  sources:
+    - platform_database
+    - user_interactions
+    - mentor_feedback
+```
+
+### **Knowledge Base Structure**
+```
+Platform Knowledge:
+├── Static Content
+│   ├── Platform features and capabilities
+│   ├── Registration process and requirements
+│   ├── Mentor guidelines and best practices
+│   └── Program types and structures
+├── Dynamic Content
+│   ├── Current programs and availability
+│   ├── Mentor profiles and expertise
+│   ├── Pricing and schedules
+│   └── Success metrics and testimonials
+└── Learning Content
+    ├── Common user questions and answers
+    ├── Successful interaction patterns
+    ├── User feedback and improvements
+    └── Platform usage analytics
+```
+
+---
+
+## **Unified LLM Across Platform**
+
+### **Single Brain, Multiple Touchpoints**
+The same Ollama instance serves all platform interfaces:
+
+```
+User Journey with Unified LLM:
+1. Landing Page → "Find programs for my 10-year-old"
+2. Registration → Remembers previous interest, personalizes flow
+3. Dashboard → Knows user context, provides relevant assistance
+4. All interactions → Contribute to platform knowledge
+```
+
+### **Context Sharing Strategy**
+```python
+# Shared context across pages
+user_context = {
+    "session_id": "unique_session",
+    "interaction_history": [],
+    "user_preferences": {},
+    "page_transitions": [],
+    "accumulated_knowledge": {}
+}
+```
+
+---
+
+## **Development Integration Strategy**
+
+### **Incremental Ollama Adoption**
+```
+Week 1-4: Continue with pattern matching (Phase 1)
+Week 5: Set up Ollama infrastructure
+Week 6: Replace pattern matching with Ollama
+Week 7: Optimize and tune responses
+Week 8+: Continuous learning and improvement
+```
+
+### **Backward Compatibility**
+- Pattern matching remains as fallback
+- Ollama enhances rather than replaces existing logic
+- Gradual rollout with A/B testing
+- Performance monitoring and optimization
+
+---
+
+## **Technical Requirements for Ollama**
+
+### **Server Requirements**
+```
+Minimum Specifications:
+├── CPU: 4+ cores
+├── RAM: 8GB (16GB recommended)
+├── Storage: 20GB for models
+├── GPU: Optional but improves response time
+└── OS: Linux/macOS/Windows with Docker
+```
+
+### **API Integration Example**
+```python
+# Simple Ollama integration in FastAPI
+from ollama import Ollama
+
+class OllamaService:
+    def __init__(self):
+        self.ollama = Ollama(base_url='http://localhost:11434')
+        self.model = 'llama2:7b'
+    
+    async def get_response(self, query: str, context: dict):
+        # Include platform knowledge in prompt
+        prompt = self.build_prompt(query, context)
+        
+        response = await self.ollama.generate(
+            model=self.model,
+            prompt=prompt,
+            context=context.get('conversation_history', [])
+        )
+        
+        return response['response']
+```
+
+---
+
+## **Success Metrics for Ollama Integration**
+
+### **Technical Metrics**
+- Response latency: <2 seconds average
+- Model accuracy: >85% relevant responses
+- Uptime: 99.9% availability
+- Resource usage: <50% CPU/RAM utilization
+
+### **User Experience Metrics**
+- User satisfaction: >4.5/5 rating
+- Query resolution rate: >80% first response
+- Context retention: >90% accuracy across pages
+- Adoption rate: >70% prefer AI assistance
+
+### **Business Impact**
+- Registration completion: +40% improvement
+- Mentor engagement: +60% platform usage
+- Support tickets: -50% reduction
+- User retention: +35% improvement
+
+---
+
+## **Ollama Maintenance and Updates**
+
+### **Continuous Improvement**
+```
+Weekly Tasks:
+├── Review conversation logs
+├── Update knowledge base
+├── Fine-tune responses
+├── Add new interaction patterns
+└── Monitor performance metrics
+```
+
+### **Model Management**
+- Regular model updates (monthly)
+- A/B testing new models
+- Performance benchmarking
+- Fallback strategies
 
 ---
 
