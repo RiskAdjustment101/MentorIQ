@@ -37,7 +37,7 @@ class AIService {
   
   constructor() {
     // Use environment variable or default to local development
-    this.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    this.baseURL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:8000';
   }
 
   /**
@@ -243,7 +243,7 @@ class AIService {
     };
   }
 
-  private getFallbackRegistrationResponse(query: string, registrationData: any): RegistrationAIResponse {
+  private getFallbackRegistrationResponse(query: string, _registrationData: any): RegistrationAIResponse {
     // Basic field extraction for fallback
     const fieldUpdates: any = {};
     
