@@ -75,13 +75,15 @@ Context: {context}
 Be helpful, encouraging, and knowledgeable about FLL programs. Keep responses conversational but informative (2-3 sentences)."""
 
         completion = groq_client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
+            model="meta-llama/llama-4-scout-17b-16e-instruct",
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": query}
             ],
-            temperature=0.7,
-            max_tokens=300
+            temperature=0.8,
+            max_completion_tokens=400,
+            top_p=1,
+            stream=False  # For now, using non-streaming for API simplicity
         )
         
         return completion.choices[0].message.content
@@ -121,12 +123,11 @@ async def landing_chat(request: ChatRequest):
     }
 
 @app.post("/api/ai/chat/registration")
-def registration_chat(request: ChatRequest):
+async def registration_chat(request: ChatRequest):
     query = request.query
     
-    # Extract basic info
+    # Extract basic info using simple patterns
     field_updates = {}
-    response = "I'm here to help you complete your registration! "
     
     # Simple name detection
     if "name is" in query.lower() or "i'm" in query.lower():
@@ -136,7 +137,6 @@ def registration_chat(request: ChatRequest):
                 potential_name = words[i + 1].strip(".,!?")
                 if potential_name.isalpha():
                     field_updates["name"] = potential_name
-                    response = f"Hi {potential_name}! Great to meet you. "
                 break
     
     # Simple email detection
@@ -145,22 +145,38 @@ def registration_chat(request: ChatRequest):
         for word in words:
             if "@" in word and "." in word:
                 field_updates["email"] = word.strip(".,!?")
-                response += "Thanks for providing your email address! "
                 break
     
     # User type detection
     if any(word in query.lower() for word in ['parent', 'child', 'kid']):
         field_updates["userType"] = "parent"
-        response += "Wonderful! We're excited to help you find the perfect FLL program for your child."
     elif any(word in query.lower() for word in ['mentor', 'teach', 'coach']):
         field_updates["userType"] = "mentor"
-        response += "Fantastic! We need more passionate mentors like you."
     
-    if not field_updates:
-        response = "I'm here to help you complete your registration! You can tell me your name, email, and whether you're a parent or mentor."
+    # Try Groq AI for intelligent response
+    context_info = f"registration assistance with extracted fields: {field_updates}" if field_updates else "registration assistance"
+    ai_response = await get_groq_response(query, context_info)
+    
+    # Fallback to pattern matching if Groq fails
+    if not ai_response:
+        response = "I'm here to help you complete your registration! "
+        
+        if field_updates.get("name"):
+            response = f"Hi {field_updates['name']}! Great to meet you. "
+        if field_updates.get("email"):
+            response += "Thanks for providing your email address! "
+        if field_updates.get("userType") == "parent":
+            response += "Wonderful! We're excited to help you find the perfect FLL program for your child."
+        elif field_updates.get("userType") == "mentor":
+            response += "Fantastic! We need more passionate mentors like you."
+        
+        if not field_updates:
+            response = "I'm here to help you complete your registration! You can tell me your name, email, and whether you're a parent or mentor."
+        
+        ai_response = response
     
     return {
-        "response": response,
+        "response": ai_response,
         "context": "registration", 
         "field_updates": field_updates,
         "timestamp": datetime.now().isoformat()
