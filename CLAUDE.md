@@ -3,7 +3,7 @@
 ## Project Overview
 Building a secure, AI-first mentoring platform for FIRST Lego League teams with **$0 engineering budget** using Claude AI and open-source tools. **Parent-managed profiles ensure COPPA compliance while AI guides every interaction.**
 
-**Tech Stack**: Python + FastAPI + PostgreSQL + React + Tailwind CSS
+**Tech Stack**: Python + FastAPI + PostgreSQL + Next.js + Tailwind CSS
 
 ## Core Philosophy: Parent-First + AI-Enabled
 
@@ -20,7 +20,7 @@ Building a secure, AI-first mentoring platform for FIRST Lego League teams with 
 SYSTEM CONTEXT:
 - Project: FLL Mentor Platform (youth safety critical)
 - Backend: Python 3.11+ + FastAPI + SQLAlchemy 2.0 + PostgreSQL
-- Frontend: React 18+ + TypeScript + Tailwind CSS
+- Frontend: Next.js 14+ + TypeScript + Tailwind CSS
 - Constraints: $0 budget, open source only, 4-week delivery
 - Users: Parents (owners), Children (supervised), Mentors (verified)
 
@@ -91,11 +91,12 @@ PARENT CONTROL:
 - **Celery + Redis** - Background task processing
 - **pytest** - Testing framework
 
-### Frontend (React + TypeScript)
-- **React 18** - Component framework with TypeScript
+### Frontend (Next.js + TypeScript)
+- **Next.js 14** - Full-stack React framework with SSR/SSG
 - **Tailwind CSS** - Styling (Anthropic design system)
 - **React Hook Form** - Form validation
-- **React Query** - API state management
+- **TanStack Query** - API state management
+- **Next Auth** - Authentication integration
 
 ### Infrastructure & Security
 - **PostgreSQL** - Primary database
@@ -170,10 +171,10 @@ async def validate_ai_response(content: str) -> bool:
 ## Development Workflow
 
 ### Week 1: Foundation
-- Set up FastAPI + PostgreSQL + React
+- Set up FastAPI + PostgreSQL + Next.js
 - Implement parent-only authentication
 - Create basic AI prompt framework
-- Deploy to free hosting tier
+- Deploy to free hosting tier (Vercel for frontend)
 
 ### Week 2: Core Features
 - Parent onboarding with AI assistance

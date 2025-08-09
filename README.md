@@ -32,10 +32,11 @@ MentorIQ is a revolutionary parent-controlled, AI-powered mentoring platform for
 - **JWT Auth** - Secure authentication with role-based access
 
 ### Frontend
-- **React 18** - Modern component architecture
+- **Next.js 14** - Full-stack React framework with SSR/SSG
 - **TypeScript** - Type-safe development
 - **Tailwind CSS** - Utility-first styling
-- **React Query** - Efficient API state management
+- **TanStack Query** - Efficient API state management
+- **Next Auth** - Secure authentication
 
 ### AI & Security
 - **Claude API** - Primary AI reasoning engine
@@ -53,8 +54,10 @@ MentorIQ/
 │   ├── schemas/       # Pydantic schemas
 │   ├── services/      # Business logic
 │   └── utils/         # Utility functions
-├── frontend/          # React application
-│   ├── src/          # Source code
+├── frontend/          # Next.js application
+│   ├── app/          # App router pages
+│   ├── components/   # React components
+│   ├── lib/          # Utility functions
 │   └── public/       # Static assets
 ├── tests/            # Test suites
 │   ├── backend/      # Backend tests
